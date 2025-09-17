@@ -1,0 +1,171 @@
+{
+  "id": "8c93c36f-560f-44b4-95be-69ba072b64c6",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.acessorio": {
+      "name": "acessorio",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "acessorio_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.veiculo": {
+      "name": "veiculo",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "veiculo_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "modelo": {
+          "name": "modelo",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "anoFabricacao": {
+          "name": "anoFabricacao",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "placa": {
+          "name": "placa",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "veiculo_placa_unique": {
+          "name": "veiculo_placa_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "placa"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.veiculo_acessorio": {
+      "name": "veiculo_acessorio",
+      "schema": "",
+      "columns": {
+        "veiculoId": {
+          "name": "veiculoId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "acessorioId": {
+          "name": "acessorioId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "veiculo_acessorio_veiculoId_veiculo_id_fk": {
+          "name": "veiculo_acessorio_veiculoId_veiculo_id_fk",
+          "tableFrom": "veiculo_acessorio",
+          "tableTo": "veiculo",
+          "columnsFrom": [
+            "veiculoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "veiculo_acessorio_acessorioId_acessorio_id_fk": {
+          "name": "veiculo_acessorio_acessorioId_acessorio_id_fk",
+          "tableFrom": "veiculo_acessorio",
+          "tableTo": "acessorio",
+          "columnsFrom": [
+            "acessorioId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "veiculo_acessorio_veiculoId_acessorioId_pk": {
+          "name": "veiculo_acessorio_veiculoId_acessorioId_pk",
+          "columns": [
+            "veiculoId",
+            "acessorioId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

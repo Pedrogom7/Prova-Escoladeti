@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AcessorioService } from './acessorio.service';
-import { ACessorioController } from './acessorio.controller';
+import { AcessorioController } from './acessorio.controller';
 import { DrizzleModule } from 'src/db/drizzle/drizzle.module';
 
 @Module({
-  controllers: [ACessorioController],
+  controllers: [AcessorioController],
   providers: [AcessorioService],
   imports: [DrizzleModule],
+  exports: [AcessorioService],
 })
 // eslint-disable-next-line prettier/prettier
-export class GadoModule { }
+export class AcessorioModule { }

@@ -1,15 +1,26 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { and, eq } from 'drizzle-orm';
 import { DRIZZLE } from '../../db/drizzle/drizzle.module';
 import { DrizzleDB } from '../../db/drizzle/types/drizzle';
 import { veiculoTable } from '../../db/schemas/veiculo';
 import { CreateVeiculoDto } from './dto/create-veiculo.dto';
 import { UpdateVeiculoDto } from './dto/update-veiculo.dto';
+import { veiculoAcessorioTable } from 'src/db/schemas/veiculoAcessorio';
+import { AcessorioService } from '../acessorio/acessorio.service';
 
 @Injectable()
 export class VeiculoService {
-  // eslint-disable-next-line prettier/prettier
-  constructor(@Inject(DRIZZLE) private db: DrizzleDB) { }
+  constructor(
+    @Inject(DRIZZLE) private db: DrizzleDB,
+    @Inject(forwardRef(() => AcessorioService))
+    private acessorioService: AcessorioService,
+    // eslint-disable-next-line prettier/prettier
+  ) { }
 
   async findAll() {
     return await this.db.select().from(veiculoTable);
@@ -60,5 +71,34 @@ export class VeiculoService {
     if (result.length === 0)
       throw new NotFoundException('Veiculo nao encontrado.');
     return result[0];
+  }
+
+  async addAcessorio(veiculoId: number, acessorioId: number) {
+    await this.findOneById(veiculoId);
+    await this.acessorioService.findOneById(acessorioId);
+    await this.db.insert(veiculoAcessorioTable).values({
+      veiculoId,
+      acessorioId,
+    });
+    return { message: 'Acessório adicionado ao veículo com sucesso.' };
+  }
+
+  async removeAcessorio(veiculoId: number, acessorioId: number) {
+    const result = await this.db
+      .delete(veiculoAcessorioTable)
+      .where(
+        and(
+          eq(veiculoAcessorioTable.veiculoId, veiculoId),
+          eq(veiculoAcessorioTable.acessorioId, acessorioId),
+        ),
+      )
+      .returning();
+
+    if (result.length === 0) {
+      throw new NotFoundException(
+        'Relacionamento veículo-acessório não encontrado.',
+      );
+    }
+    return { message: 'Acessório removido do veículo com sucesso.' };
   }
 }

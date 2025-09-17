@@ -5,14 +5,14 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { AcessorioService } from './acessorio.service';
 import { CreateAcessorioDto } from './dto/create-acessorio.dto';
 import { UpdateAcessorioDto } from './dto/update-acessorio.dto';
-@Controller('veiculos')
-export class ACessorioController {
+@Controller('acessorios')
+export class AcessorioController {
   // eslint-disable-next-line prettier/prettier
   constructor(private readonly acessorioService: AcessorioService) { }
 
@@ -27,19 +27,19 @@ export class ACessorioController {
   }
 
   @Post()
-  create(@Body() CreateAcessorioDto: CreateAcessorioDto) {
-    return this.acessorioService.create(CreateAcessorioDto);
+  create(@Body() createAcessorioDto: CreateAcessorioDto) {
+    return this.acessorioService.create(createAcessorioDto);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() UpdateVeiculoDto: UpdateAcessorioDto,
+    @Body() updateVeiculoDto: UpdateAcessorioDto,
   ) {
-    return this.acessorioService.update(id, UpdateVeiculoDto);
+    return this.acessorioService.update(id, updateVeiculoDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.acessorioService.delete(id);
   }

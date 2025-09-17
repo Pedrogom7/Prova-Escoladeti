@@ -5,8 +5,8 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { VeiculoService } from './veiculo.service';
 import { CreateVeiculoDto } from './dto/create-veiculo.dto';
@@ -28,20 +28,35 @@ export class VeiculoController {
   }
 
   @Post()
-  create(@Body() CreateVeiculoDto: CreateVeiculoDto) {
-    return this.veiculoService.create(CreateVeiculoDto);
+  create(@Body() createVeiculoDto: CreateVeiculoDto) {
+    return this.veiculoService.create(createVeiculoDto);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() UpdateVeiculoDto: UpdateVeiculoDto,
+    @Body() updateVeiculoDto: UpdateVeiculoDto,
   ) {
-    return this.veiculoService.update(id, UpdateVeiculoDto);
+    return this.veiculoService.update(id, updateVeiculoDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.veiculoService.delete(id);
+  }
+
+  @Post(':id/acessorios/:acessorioId')
+  addAcessorio(
+    @Param('id', ParseIntPipe) veiculoId: number,
+    @Param('acessorioId', ParseIntPipe) acessorioId: number,
+  ) {
+    return this.veiculoService.addAcessorio(veiculoId, acessorioId);
+  }
+  @Delete(':id/acessorios/:acessorioId')
+  removeAcessorio(
+    @Param('id', ParseIntPipe) veiculoId: number,
+    @Param('acessorioId', ParseIntPipe) acessorioId: number,
+  ) {
+    return this.veiculoService.removeAcessorio(veiculoId, acessorioId);
   }
 }

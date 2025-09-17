@@ -57,7 +57,7 @@ export class AcessorioService {
       .where(eq(acessorioTable.id, id))
       .returning({ id: acessorioTable.id });
     if (result.length === 0)
-      throw new NotFoundException('Veiculo nao encontrado.');
+      throw new NotFoundException('Acessorio nao encontrado.');
     return result[0];
   }
 }
